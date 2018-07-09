@@ -55,8 +55,9 @@ void CTcpListener::Run() {
 							std::ostringstream ss;
 							ss << "SOCKET #" << sock << ": " << buff << "\r\n";
 							std::string strOut = ss.str();
-
-							send(outSock, strOut.c_str(), sizeof(strOut) + 1, 0);
+							if (MessageHandler != NULL) {
+								MessageHandler(this, sock, strOut);
+							}
 						}
 					}
 				}
