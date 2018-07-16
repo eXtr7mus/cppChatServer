@@ -1,5 +1,3 @@
 ﻿  CTcpListener.cpp
-c:\users\extr7mus\source\repos\server\server\ctcplistener.cpp(52): warning C4018: <: несоответствие типов со знаком и без знака
-  main.cpp
-  Создание кода...
+c:\users\extr7mus\source\repos\server\server\ctcplistener.cpp(53): warning C4018: <: несоответствие типов со знаком и без знака
   server.vcxproj -> C:\Users\eXtr7mus\source\repos\server\Debug\server.exe

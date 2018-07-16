@@ -1,0 +1,4 @@
+<server>
+	<port>54000</port>
+	<ipaddr>127.0.0.1</ipaddr>
+</server>

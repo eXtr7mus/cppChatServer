@@ -1,2 +1,13 @@
 ﻿  main.cpp
-  server.vcxproj -> C:\Users\eXtr7mus\source\repos\server\x64\Debug\server.exe
+main.obj : error LNK2019: ссылка на неразрешенный внешний символ "public: virtual __cdecl TiXmlNode::~TiXmlNode(void)" (??1TiXmlNode@@UEAA@XZ) в функции "public: virtual __cdecl TiXmlDocument::~TiXmlDocument(void)" (??1TiXmlDocument@@UEAA@XZ)
+main.obj : error LNK2019: ссылка на неразрешенный внешний символ "public: class TiXmlElement const * __cdecl TiXmlNode::FirstChildElement(void)const " (?FirstChildElement@TiXmlNode@@QEBAPEBVTiXmlElement@@XZ) в функции "public: class TiXmlElement * __cdecl TiXmlNode::FirstChildElement(void)" (?FirstChildElement@TiXmlNode@@QEAAPEAVTiXmlElement@@XZ)
+main.obj : error LNK2019: ссылка на неразрешенный внешний символ "public: class TiXmlElement const * __cdecl TiXmlNode::FirstChildElement(char const *)const " (?FirstChildElement@TiXmlNode@@QEBAPEBVTiXmlElement@@PEBD@Z) в функции "public: class TiXmlElement * __cdecl TiXmlNode::FirstChildElement(char const *)" (?FirstChildElement@TiXmlNode@@QEAAPEAVTiXmlElement@@PEBD@Z)
+main.obj : error LNK2019: ссылка на неразрешенный внешний символ "public: char const * __cdecl TiXmlElement::GetText(void)const " (?GetText@TiXmlElement@@QEBAPEBDXZ) в функции main
+main.obj : error LNK2019: ссылка на неразрешенный внешний символ "public: __cdecl TiXmlDocument::TiXmlDocument(char const *)" (??0TiXmlDocument@@QEAA@PEBD@Z) в функции main
+main.obj : error LNK2019: ссылка на неразрешенный внешний символ "public: bool __cdecl TiXmlDocument::LoadFile(enum TiXmlEncoding)" (?LoadFile@TiXmlDocument@@QEAA_NW4TiXmlEncoding@@@Z) в функции main
+main.obj : error LNK2001: неразрешенный внешний символ ""public: virtual char const * __cdecl TiXmlDocument::Parse(char const *,class TiXmlParsingData *,enum TiXmlEncoding)" (?Parse@TiXmlDocument@@UEAAPEBDPEBDPEAVTiXmlParsingData@@W4TiXmlEncoding@@@Z)"
+main.obj : error LNK2001: неразрешенный внешний символ ""public: virtual void __cdecl TiXmlDocument::Print(struct _iobuf *,int)const " (?Print@TiXmlDocument@@UEBAXPEAU_iobuf@@H@Z)"
+main.obj : error LNK2001: неразрешенный внешний символ ""public: virtual bool __cdecl TiXmlDocument::Accept(class TiXmlVisitor *)const " (?Accept@TiXmlDocument@@UEBA_NPEAVTiXmlVisitor@@@Z)"
+main.obj : error LNK2001: неразрешенный внешний символ ""protected: virtual class TiXmlNode * __cdecl TiXmlDocument::Clone(void)const " (?Clone@TiXmlDocument@@MEBAPEAVTiXmlNode@@XZ)"
+main.obj : error LNK2019: ссылка на неразрешенный внешний символ "private: static struct TiXmlString::Rep TiXmlString::nullrep_" (?nullrep_@TiXmlString@@0URep@1@A) в функции "private: void __cdecl TiXmlString::quit(void)" (?quit@TiXmlString@@AEAAXXZ)
+C:\Users\eXtr7mus\source\repos\server\x64\Debug\server.exe : fatal error LNK1120: неразрешенных внешних элементов: 11

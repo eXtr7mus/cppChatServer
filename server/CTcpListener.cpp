@@ -26,6 +26,7 @@ bool CTcpListener::Init() {
 }
 
 void CTcpListener::Run() {
+	std::cout << "Server started on " << m_ipAddress << " on port " << m_port << std::endl;
 	FD_ZERO(&master);
 	char buff[MAX_BUFF_SIZE];
 	SOCKET listening = CreateSocket();
@@ -106,6 +107,14 @@ SOCKET CTcpListener::WaitForConnection(SOCKET listening) {
 	int clientInfSize = sizeof(clientInf);
 	SOCKET client = accept(listening, (sockaddr*)&clientInf, &clientInfSize);
 	
+
+	
+
+
+	char buf[4096];
+	ZeroMemory(buf, 4096);
+	int bytesReceived = recv(client, buf, 4096, 0);
+
 	char host[NI_MAXHOST];
 	char service[NI_MAXSERV];
 
@@ -113,15 +122,15 @@ SOCKET CTcpListener::WaitForConnection(SOCKET listening) {
 	ZeroMemory(service, NI_MAXSERV);
 
 	if (getnameinfo((sockaddr*)&client, sizeof(client), host, NI_MAXHOST, service, NI_MAXSERV, 0) == 0) {
-		std::cout << host << " connected on port " << service << std::endl;
-	} 
+		std::cout << host << " NAME : " << buf  << " connected on port " << service << std::endl;
+	}
 	else {
 		inet_ntop(AF_INET, &clientInf.sin_addr, host, NI_MAXHOST);
-		std::cout << host << " connected on port " << ntohs(clientInf.sin_port) << std::endl;
+		std::cout << host << " NAME : " << buf  << " connected on port " << ntohs(clientInf.sin_port) << std::endl;
 	}
-	
+
 	std::ostringstream ss;
-	ss << "Welcome to server.Your name : " << host << " your port " << service << "\r\n";
+	ss << "Welcome to server, " << buf;
 
 	std::string welcomeMsg = ss.str();
 	send(client, welcomeMsg.c_str(), sizeof(welcomeMsg) + 1, 0);
