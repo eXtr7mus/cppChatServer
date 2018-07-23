@@ -56,6 +56,7 @@ void CTcpListener::Run() {
 							std::ostringstream ss;
 							ss << "SOCKET #" << sock << ": " << buff << "\r\n";
 							std::string strOut = ss.str();
+							std::cout << strOut << std::endl;
 							if (MessageHandler != NULL) {
 								MessageHandler(this, sock, strOut);
 							}
@@ -106,10 +107,6 @@ SOCKET CTcpListener::WaitForConnection(SOCKET listening) {
 	sockaddr_in clientInf;
 	int clientInfSize = sizeof(clientInf);
 	SOCKET client = accept(listening, (sockaddr*)&clientInf, &clientInfSize);
-	
-
-	
-
 
 	char buf[4096];
 	ZeroMemory(buf, 4096);
