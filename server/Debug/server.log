@@ -1,2 +1,2 @@
-﻿  main.cpp
-  server.vcxproj -> C:\Users\eXtr7mus\source\repos\server\Debug\server.exe
+﻿  CTcpListener.cpp
+LINK : fatal error LNK1168: не удается открыть C:\Users\eXtr7mus\source\repos\server\Debug\server.exe для записи

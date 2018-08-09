@@ -4,6 +4,7 @@
 #include <string>
 #include <iostream>
 #include <sstream>
+#include <map>
 #pragma comment(lib, "ws2_32.lib")
 
 #define MAX_BUFF_SIZE (49000)
@@ -19,6 +20,7 @@ private:
 	std::string m_ipAddress;
 	int m_port;
 	fd_set master;
+	std::map <int, std::string> clients;
 	MessageReceivedHandler MessageHandler;
 public:
 	CTcpListener(std::string ipAddress, int port, MessageReceivedHandler handler);

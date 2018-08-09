@@ -33,32 +33,32 @@ void CTcpListener::Run() {
 	FD_SET(listening, &master);
 	while (true) {
 		fd_set copy = master;
-
 		int socketCount = select(0, &copy, nullptr, nullptr, nullptr);
 		for (int i = 0; i < socketCount; i++) {
 			SOCKET sock = copy.fd_array[i];
 			if (sock == listening) {
 				SOCKET client = WaitForConnection(listening);
-				FD_SET(client, &master);
+				if (client != SOCKET_ERROR) {
+					FD_SET(client, &master);
+				}
 			} 
 			else {
 				ZeroMemory(buff, MAX_BUFF_SIZE);
-
 				int bytesIn = recv(sock, buff, MAX_BUFF_SIZE, 0);
 				if (bytesIn <= 0) {
 					closesocket(sock);
+					clients.erase(sock);
 					FD_CLR(sock, &master);
 				} 
 				else {
-					for (int i = 0; i < master.fd_count; i++) {
-						SOCKET outSock = master.fd_array[i];
-						if (outSock != listening && outSock != sock) {
+					for (auto it = clients.begin(); it != clients.end(); it++) {
+						if (it->first != sock) {
 							std::ostringstream ss;
-							ss << "SOCKET #" << sock << ": " << buff << "\r\n";
+							ss << clients.find(sock)->second << " : " << buff << "\r\n";
 							std::string strOut = ss.str();
 							std::cout << strOut << std::endl;
 							if (MessageHandler != NULL) {
-								MessageHandler(this, sock, strOut);
+								MessageHandler(this, it->first, strOut);
 							}
 						}
 					}
@@ -111,25 +111,51 @@ SOCKET CTcpListener::WaitForConnection(SOCKET listening) {
 	char buf[4096];
 	ZeroMemory(buf, 4096);
 	int bytesReceived = recv(client, buf, 4096, 0);
-
-	char host[NI_MAXHOST];
-	char service[NI_MAXSERV];
-
-	ZeroMemory(host, NI_MAXHOST);
-	ZeroMemory(service, NI_MAXSERV);
-
-	if (getnameinfo((sockaddr*)&client, sizeof(client), host, NI_MAXHOST, service, NI_MAXSERV, 0) == 0) {
-		std::cout << host << " NAME : " << buf  << " connected on port " << service << std::endl;
+	std::string clientNickname(buf);
+	bool checkNickname = false;
+	for (auto it = clients.begin(); it != clients.end(); it++) {
+		if (it->second == clientNickname) {
+			checkNickname = true;
+			break;
+		}
+	}
+	if (checkNickname){
+		send(client, "/wn", sizeof("/wn") + 1, 0);
+		std::cout << "Wrond nick conn" << std::endl;
 	}
 	else {
-		inet_ntop(AF_INET, &clientInf.sin_addr, host, NI_MAXHOST);
-		std::cout << host << " NAME : " << buf  << " connected on port " << ntohs(clientInf.sin_port) << std::endl;
+		clients.insert(std::pair<int, std::string>(client, buf));
+		char host[NI_MAXHOST];
+		char service[NI_MAXSERV];
+
+		ZeroMemory(host, NI_MAXHOST);
+		ZeroMemory(service, NI_MAXSERV);
+
+		if (getnameinfo((sockaddr*)&client, sizeof(client), host, NI_MAXHOST, service, NI_MAXSERV, 0) == 0) {
+			std::cout << host << " NAME : " << buf << " connected on port " << service << std::endl;
+		}
+		else {
+			inet_ntop(AF_INET, &clientInf.sin_addr, host, NI_MAXHOST);
+			std::cout << host << " NAME : " << buf << " connected on port " << ntohs(clientInf.sin_port) << std::endl;
+		}
+
+		std::ostringstream ss;
+		ss << buf << " just connected to server! yaaay!";
+
+		std::string welcomeMsg = ss.str();
+		for (auto it = clients.begin(); it != clients.end(); it++) {
+			if (it->first != client) {
+				std::ostringstream sss;
+				sss << welcomeMsg << "\r\n";
+				std::string strOut = sss.str();
+				std::cout << strOut << std::endl;
+				if (MessageHandler != NULL) {
+					MessageHandler(this, it->first, strOut);
+				}
+			}
+		}
+		send(client, welcomeMsg.c_str(), sizeof(welcomeMsg) + 1, 0);
+		return client;
 	}
-
-	std::ostringstream ss;
-	ss << "Welcome to server, " << buf;
-
-	std::string welcomeMsg = ss.str();
-	send(client, welcomeMsg.c_str(), sizeof(welcomeMsg) + 1, 0);
-	return client;
+	return SOCKET_ERROR;
 }
